@@ -4,3 +4,4 @@ tests/integration/server/node_modules
 js/vendor
 target
 bin
+.idea/

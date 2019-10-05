@@ -5,10 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bf2755ca-ed19-48d2-b217-9eb16eebd233" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/Cargo.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/osgood-v8/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/osgood-v8/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/osgood-v8/build.rs" beforeDir="false" afterPath="$PROJECT_DIR$/osgood-v8/build.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/osgood-v8/v8-version.txt" beforeDir="false" afterPath="$PROJECT_DIR$/osgood-v8/v8-version.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.cargo/config" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -58,6 +57,7 @@
   </component>
   <component name="RustProjectSettings">
     <option name="toolchainHomeDirectory" value="$USER_HOME$/.cargo/bin" />
+    <option name="version" value="2" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -77,7 +77,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
