@@ -1,0 +1,40 @@
+[osgood-v8 0.2.1] cargo:rerun-if-changed=src/wrapper.cpp
+[osgood-v8 0.2.1] TARGET = Some("x86_64-pc-windows-msvc")
+[osgood-v8 0.2.1] OPT_LEVEL = Some("0")
+[osgood-v8 0.2.1] HOST = Some("x86_64-pc-windows-msvc")
+[osgood-v8 0.2.1] CXX_x86_64-pc-windows-msvc = None
+[osgood-v8 0.2.1] CXX_x86_64_pc_windows_msvc = None
+[osgood-v8 0.2.1] HOST_CXX = None
+[osgood-v8 0.2.1] CXX = None
+[osgood-v8 0.2.1] CXXFLAGS_x86_64-pc-windows-msvc = None
+[osgood-v8 0.2.1] CXXFLAGS_x86_64_pc_windows_msvc = None
+[osgood-v8 0.2.1] HOST_CXXFLAGS = None
+[osgood-v8 0.2.1] CXXFLAGS = None
+[osgood-v8 0.2.1] CRATE_CC_NO_DEFAULTS = None
+[osgood-v8 0.2.1] CARGO_CFG_TARGET_FEATURE = Some("crt-static,fxsr,mmx,sse,sse2")
+[osgood-v8 0.2.1] DEBUG = Some("true")
+[osgood-v8 0.2.1] running: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Tools\\MSVC\\14.16.27023\\bin\\HostX64\\x64\\cl.exe" "/nologo" "/MT" "/Z7" "/I" "D:\\deno\\v8_prebuild\\include" "/EHsc" "/std:c++14" "/Fod:\\git_repo\\osgood\\target\\debug\\build\\osgood-v8-8f9e27d80391ffc9\\out\\src\\wrapper.o" "/c" "src/wrapper.cpp"
+[osgood-v8 0.2.1] wrapper.cpp
+[osgood-v8 0.2.1] exit code: 0
+[osgood-v8 0.2.1] AR_x86_64-pc-windows-msvc = None
+[osgood-v8 0.2.1] AR_x86_64_pc_windows_msvc = None
+[osgood-v8 0.2.1] HOST_AR = None
+[osgood-v8 0.2.1] AR = None
+[osgood-v8 0.2.1] running: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Tools\\MSVC\\14.16.27023\\bin\\HostX64\\x64\\lib.exe" "/OUT:d:\\git_repo\\osgood\\target\\debug\\build\\osgood-v8-8f9e27d80391ffc9\\out\\libwrapper.a" "/nologo" "d:\\git_repo\\osgood\\target\\debug\\build\\osgood-v8-8f9e27d80391ffc9\\out\\src\\wrapper.o"
+[osgood-v8 0.2.1] exit code: 0
+[osgood-v8 0.2.1] cargo:rustc-link-lib=static=wrapper
+[osgood-v8 0.2.1] cargo:rustc-link-search=native=d:\git_repo\osgood\target\debug\build\osgood-v8-8f9e27d80391ffc9\out
+[osgood-v8 0.2.1] CXXSTDLIB_x86_64-pc-windows-msvc = None
+[osgood-v8 0.2.1] CXXSTDLIB_x86_64_pc_windows_msvc = None
+[osgood-v8 0.2.1] HOST_CXXSTDLIB = None
+[osgood-v8 0.2.1] CXXSTDLIB = None
+[osgood-v8 0.2.1] cargo:rustc-link-lib=DbgHelp
+[osgood-v8 0.2.1] cargo:rustc-link-lib=Winmm
+[osgood-v8 0.2.1] cargo:rustc-link-lib=Shlwapi
+[osgood-v8 0.2.1] cargo:rustc-link-lib=v8_libbase
+[osgood-v8 0.2.1] cargo:rustc-link-lib=v8_libplatform
+[osgood-v8 0.2.1] cargo:rustc-link-lib=v8_monolith
+[osgood-v8 0.2.1] cargo:rustc-link-search=D:\deno\v8_prebuild/lib
+[osgood-v8 0.2.1] cargo:rustc-link-search=D:\deno\v8_prebuild/lib/third_party/icu
+[osgood-v8 0.2.1] cargo:warning=couldn't execute `llvm-config --prefix` (error: 系统找不到指定的文件。 (os error 2))
+[osgood-v8 0.2.1] cargo:warning=set the LLVM_CONFIG_PATH environment variable to a valid `llvm-config` executable

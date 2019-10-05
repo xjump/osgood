@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/osgood-v8/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/osgood-v8\examples" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/osgood-v8\tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/osgood-v8\benches" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/osgood-v8-macros/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/osgood-v8-macros\examples" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/osgood-v8-macros/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/osgood-v8-macros\benches" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/examples" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../osgood\benches" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/osgood-v8-macros\target" />
+      <excludeFolder url="file://$MODULE_DIR$/osgood-v8\target" />
+      <excludeFolder url="file://$MODULE_DIR$/../osgood\target" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
