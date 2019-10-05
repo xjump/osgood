@@ -237,11 +237,10 @@ impl Local<V8::Value> {
     downcast!(V8::Number, to_number);
     downcast!(V8::ArrayBuffer, to_array_buffer);
 
-    pub fn as_rust_bool(&mut self, context: Local<V8::Context>) -> bool {
-        unsafe {
-            let maybe_bool = self.inner_mut().ToBoolean(context.into());
-            maybe_bool.to_local_checked().unwrap().inner_mut().Value()
-        }
+    pub fn as_rust_bool(&mut self) -> bool {
+         unsafe {
+            V8::Value_BooleanValue(self.inner_mut(), Isolate::raw())
+         }
     }
 
     // TODO: Refactor so that `mut` isn't required here

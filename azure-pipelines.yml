@@ -1,0 +1,175 @@
+trigger:
+- master
+
+strategy:
+  matrix:
+    linux:
+      imageName: "ubuntu-16.04"
+    mac:
+      imageName: "macos-10.13"
+    windows:
+      imageName: "vs2017-win2016"
+      python.version: '2.7'
+  maxParallel: 30
+
+pool:
+  vmImage: $(imageName)
+
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '2.7'
+    addToPath: true 
+    architecture: 'x64'
+- task: NodeTool@0 
+  inputs:
+    versionSpec: '12'
+
+- script: npm install -g webpack 
+
+# Linux
+- bash: |
+    export BUILD_DIR=$HOME/buildout
+    export RUST_BACKTRACE=full
+    curl https://sh.rustup.rs -sSf > rustup.sh && sh rustup.sh -y 
+    source $HOME/.cargo/env
+    export PATH=$PATH:$HOME/.cargo/bin
+    rustup component add rustfmt
+    apt install build-essential pkg-config libc++-dev libc++abi-dev clang libclang-dev libssl-dev
+    # curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+    # nvm install 12
+    
+    mkdir -p $BUILD_DIR
+
+    cd $HOME
+    git clone https://github.com/xjump/osgood.git
+
+    cd osgood
+    cd js
+    npm install && npm audit fix
+    cd ..
+    cargo build --release -vv
+
+    rm -rf .git
+
+    zip -q -r prebuilt-linux-latest.zip $HOME/osgood
+    mv prebuilt-linux-latest.zip $BUILD_DIR/
+    ls -al $BUILD_DIR
+  condition: eq( variables['Agent.OS'], 'Linux' )
+  displayName: Build deno on Linux
+  timeoutInMinutes: 120
+
+# macOS
+- bash: |
+    export BUILD_DIR=$HOME/buildout
+    export RUST_BACKTRACE=full
+    curl https://sh.rustup.rs -sSf > rustup.sh && sh rustup.sh -y 
+    source $HOME/.cargo/env
+    export PATH=$PATH:$HOME/.cargo/bin
+    rustup component add rustfmt
+    # curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+    # nvm install 12
+
+    mkdir -p $BUILD_DIR
+    
+    cd $HOME
+    git clone https://github.com/xjump/osgood.git
+
+    cd osgood
+    cd js
+    npm install && npm audit fix
+    cd ..
+
+    cargo build --release -vv
+
+    rm -rf .git
+
+    zip -q -r prebuilt-osx-latest.zip $HOME/osgood
+    mv prebuilt-osx-latest.zip $BUILD_DIR/
+    ls -al $BUILD_DIR
+
+  condition: eq( variables['Agent.OS'], 'Darwin' )
+  displayName: Build osgood on macOS
+  timeoutInMinutes: 120
+
+# Windows
+- powershell: |
+    $Env:BUILDDIR=$HOME+'\buildout'
+    Write-Host "##vso[task.setvariable variable=BUILD_DIR]$Env:BUILDDIR"
+    $Env:RUST_BACKTRACE='full'
+    rustup update
+    rustup component add rustfmt
+
+    echo $HOME
+
+    mkdir -p $Env:BUILDDIR
+
+    cd $HOME
+    git config --global core.symlinks true
+    git clone https://github.com/xjump/osgood.git
+
+    cd osgood
+    
+    cd js
+    npm install 
+    npm audit fix
+    cd ..
+
+    cargo build --release -vv
+    dir 
+    del ./.git -Force -Recurse
+    dir
+  condition: eq( variables['Agent.OS'], 'Windows_NT' )
+  displayName: Build osgood on Windows
+  timeoutInMinutes: 120
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(BUILD_DIR)/../osgood' 
+    includeRootFolder: true 
+    archiveType: 'zip' # Options: zip, 7z, tar, wim
+    #tarCompression: 'gz' # Optional. Options: gz, bz2, xz, none
+    archiveFile: '$(BUILD_DIR)/prebuilt-windows-latest.zip' 
+    replaceExistingArchive: true 
+    verbose: false # Optional
+    #quiet: # Optional
+  condition: eq( variables['Agent.OS'], 'Windows_NT' )
+  displayName: Zip osgood on Windows
+  timeoutInMinutes: 120
+
+- task: GithubRelease@0 
+  displayName: 'Create GitHub Release on Windows'      
+  inputs:
+    gitHubConnection: 'xjump_token'
+    repositoryName: 'xjump/osgood'
+    action: 'edit'
+    addChangeLog: false
+    target: '$(build.sourceVersion)'
+    tagSource: 'Git tag'
+    tag: '1.0'
+    assetUploadMode: 'replace'
+    assets: |
+      $(BUILD_DIR)/*.zip
+  condition: eq( variables['Agent.OS'], 'Windows_NT' )
+  timeoutInMinutes: 120
+
+- task: GithubRelease@0 
+  displayName: 'Create GitHub Release on Linux or macOS'      
+  inputs:
+    gitHubConnection: 'xjump_token'
+    repositoryName: 'xjump/osgood'
+    action: 'edit'
+    addChangeLog: false
+    target: '$(build.sourceVersion)'
+    tagSource: 'Git tag'
+    tag: '1.0'
+    assetUploadMode: 'replace'
+    assets: |
+      $(HOME)/buildout/*.zip
+  condition: not ( eq( variables['Agent.OS'], 'Windows_NT' ) )
+  timeoutInMinutes: 120
+
+
+
+

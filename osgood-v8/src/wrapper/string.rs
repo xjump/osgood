@@ -10,7 +10,7 @@ macro_rules! c_str {
 
 impl V8::String {
     pub fn new_from_slice(val: &str) -> Local<V8::String> {
-        unsafe { V8::String_NewFromUtf8(Isolate::raw(), c_str!(val), 0, -1).into() }
+        unsafe { V8::String_NewFromUtf8(Isolate::raw(), c_str!(val), 0, -1).to_local_checked().unwrap() }
     }
 }
 

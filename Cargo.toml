@@ -32,3 +32,7 @@ osgood-v8-macros = { path = "osgood-v8-macros" }
 
 [workspace]
 members = ["osgood-v8", "osgood-v8-macros"]
+
+[profile.release]
+opt-level = 3
+lto = true

@@ -31,15 +31,15 @@ impl Local<Object> {
                 .into();
             let v8_fn_val =
                 std::mem::transmute::<V8::Local<V8::Function>, V8::Local<V8::Value>>(v8_fn);
-            self.inner_mut().Set(v8_name.into(), v8_fn_val);
+            self.inner_mut().Set(context.into(), v8_name.into(), v8_fn_val);
         }
     }
 
-    pub fn set(&mut self, name: &str, val: impl IntoValue) {
+    pub fn set(&mut self, context: Local<Context>, name: &str, val: impl IntoValue) {
         unsafe {
             let key = V8::String::new_from_slice(name);
             self.inner_mut()
-                .Set(key.as_value().into(), val.into_value().into());
+                .Set(context.into(), key.as_value().into(), val.into_value().into());
         }
     }
 
@@ -48,7 +48,7 @@ impl Local<Object> {
         unsafe {
             let key = V8::String::new_from_slice(name);
             self.inner_mut()
-                .Get1(context.into(), key.as_value().into())
+                .Get(context.into(), key.as_value().into())
                 .to_local_checked()
                 .unwrap()
         }
@@ -112,9 +112,9 @@ impl std::iter::Iterator for ObjectIterator {
             None
         } else {
             let name = self.names.get(self.context, &self.cursor.to_string());
-            let val = unsafe { self.obj.inner_mut().Get(name.into()) };
+            let val = unsafe { self.obj.inner_mut().Get(self.context.into(), name.into()) };
             self.cursor += 1;
-            Some((name, val.into()))
+            Some((name, val.to_local_checked().unwrap()))
         }
     }
 }

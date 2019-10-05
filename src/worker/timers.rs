@@ -18,7 +18,7 @@ pub fn set_timer_handler(args: FunctionCallbackInfo) {
     global.set_private(context, "timer_handler", func);
 }
 
-pub fn call_timer_handler(mut context: Local<V8::Context>, args: Vec<&IntoValue>) {
+pub fn call_timer_handler(mut context: Local<V8::Context>, args: Vec<&dyn IntoValue>) {
     let null = Isolate::null();
     context
         .global()

@@ -267,7 +267,7 @@ impl Worker {
     }
 }
 
-fn get_context() -> Local<Context> {
+pub fn get_context() -> Local<Context> {
     CONTEXT.with(|c| {
         c.borrow_mut()
             .clone()
@@ -286,7 +286,7 @@ fn get_module_map() -> HashMap<i32, std::string::String> {
 fn process_incoming_message(
     message: Message,
     origin: &str,
-) -> Box<Future<Item = (), Error = ()> + Send> {
+) -> Box<dyn Future<Item = (), Error = ()> + Send> {
     let origin = origin.to_owned();
     Box::new(future::lazy(move || {
         current_thread::spawn(inbound::handle_inbound(message, &origin));
@@ -298,8 +298,8 @@ fn make_globals(mut context: Local<Context>, route: &str) {
     let mut global = context.global();
     let mut obj = Object::new();
 
-    global.set("self", global);
-    obj.set("_route", route);
+    global.set(context, "self", global);
+    obj.set(context, "_route", route);
     obj.set_extern_method(context, "sendError", inbound::send_error);
     obj.set_extern_method(context, "startResponse", inbound::start_response);
     obj.set_extern_method(context, "writeResponse", inbound::write_response);
@@ -321,7 +321,7 @@ fn make_globals(mut context: Local<Context>, route: &str) {
         obj.set_extern_method(context, "debug", debug);
     }
     obj.set_extern_method(context, "getPrivate", get_private);
-    global.set("_bindings", obj);
+    global.set(context, "_bindings", obj);
 }
 
 fn run_module(

@@ -95,7 +95,7 @@ impl ConfigStaticRoute {
 
         match index_type {
             TypeofTypes::Boolean => {
-                let index_value = options.get(context, "index").as_rust_bool(context);
+                let index_value = options.get(context, "index").as_rust_bool();
                 if index_value {
                     index = Some(std::string::String::from("index.html"));
                 } else {
@@ -109,7 +109,7 @@ impl ConfigStaticRoute {
             _ => index = Some(std::string::String::from("index.html")),
         }
 
-        let clean_html_ext = options.get(context, "cleanUrls").as_rust_bool(context);
+        let clean_html_ext = options.get(context, "cleanUrls").as_rust_bool();
 
         ConfigStaticRoute {
             route_prefix,

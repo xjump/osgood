@@ -18,11 +18,13 @@ impl Isolate {
             let params = V8::Isolate_CreateParams {
                 code_event_handler: None,
                 constraints: V8::ResourceConstraints {
-                    max_semi_space_size_in_kb_: 0,
-                    max_old_space_size_: 0,
-                    stack_limit_: ptr::null_mut(),
                     code_range_size_: 0,
+                    max_old_generation_size_: 0,
+                    max_young_generation_size_: 0,
                     max_zone_pool_size_: 0,
+                    initial_old_generation_size_: 0,
+                    initial_young_generation_size_: 0,
+                    stack_limit_: ptr::null_mut(),
                 },
                 snapshot_blob: ptr::null_mut(),
                 counter_lookup_callback: None,

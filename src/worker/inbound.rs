@@ -84,7 +84,7 @@ pub fn set_inbound_req_head_handler(args: FunctionCallbackInfo) {
 
 pub fn call_inbound_req_head_handler(
     context: Local<V8::Context>,
-    args: Vec<&IntoValue>,
+    args: Vec<&dyn IntoValue>,
 ) -> Local<V8::Function> {
     let null = Isolate::null();
     HEAD_CB.with(|cb| {
@@ -147,8 +147,8 @@ pub fn start_response(args: FunctionCallbackInfo) {
 pub fn write_response(args: FunctionCallbackInfo) {
     let mut v8_chunk = args.get(0).unwrap();
     let req_id = args.get(1).unwrap().to_number().value() as i32;
-    let context = Isolate::get_current_context();
-    if v8_chunk.as_rust_bool(context) {
+    //let context = Isolate::get_current_context();
+    if v8_chunk.as_rust_bool() {
         let mut chunk = v8_chunk.to_array_buffer();
         let chunk = chunk.as_vec_u8();
         REQ_ID_TO_TX.with(|cell| {

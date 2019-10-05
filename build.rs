@@ -11,15 +11,15 @@ use std::process::Command;
 
 fn main() {
     let target_dir = env::var("OUT_DIR").unwrap();
-    if is_lock_newer_than_binary(target_dir) {
+    //if is_lock_newer_than_binary(target_dir) {
         println!("cargo:rerun-if-changed={}", "js/package-lock.json");
-        let child = Command::new("npm")
-            .arg("install")
-            .current_dir("js")
-            .status()
-            .unwrap();
-        assert!(child.success());
-    }
+    //    let child = Command::new("npm")
+    //        .arg("install")
+    //        .current_dir("js")
+    //        .status()
+    //        .unwrap();
+    //    assert!(child.success());
+    //}
 
     let path = Path::new(&env::var("OUT_DIR").unwrap()).join("bootstrap.rs");
     let mut file = BufWriter::new(fs::File::create(&path).unwrap());

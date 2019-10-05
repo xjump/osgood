@@ -51,7 +51,7 @@ thread_local! {
     static NAME: RefCell<string::String> = RefCell::new("------".to_string());
 }
 
-type FutureResponse = Box<Future<Item = Response<Body>, Error = std::io::Error> + Send>;
+type FutureResponse = Box<dyn Future<Item = Response<Body>, Error = std::io::Error> + Send>;
 type ResponseResult = Result<Response<Body>, string::String>;
 
 fn main() {

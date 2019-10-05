@@ -6,8 +6,8 @@ impl Local<Function> {
     pub fn call(
         &mut self,
         context: Local<Context>,
-        recv: &IntoValue,
-        argv: Vec<&IntoValue>,
+        recv: &dyn IntoValue,
+        argv: Vec<&dyn IntoValue>,
     ) -> Local<V8::Value> {
         let argc = argv.len() as i32;
         let mut argv: Vec<V8::Local<V8::Value>> =

@@ -3,9 +3,10 @@ use osgood_v8::wrapper::{Local, Valuable};
 use osgood_v8::V8;
 
 pub fn v8_headers(header_map: &HeaderMap) -> Local<V8::Object> {
+    let context = get_context();
     let mut v8_headers = V8::Object::new();
     for (h_name, h_value) in header_map {
-        v8_headers.set(h_name.as_str(), h_value.to_str().unwrap());
+        v8_headers.set(context, h_name.as_str(), h_value.to_str().unwrap());
     }
     v8_headers
 }

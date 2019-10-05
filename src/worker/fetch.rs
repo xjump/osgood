@@ -56,7 +56,7 @@ pub fn set_fetch_handler(args: FunctionCallbackInfo) {
     set_fetch_cb(func.into());
 }
 
-pub fn call_fetch_handler(context: Local<V8::Context>, args: Vec<&IntoValue>) {
+pub fn call_fetch_handler(context: Local<V8::Context>, args: Vec<&dyn IntoValue>) {
     let null = Isolate::null();
     FETCH_CB.with(|cb| {
         let mut cb: Local<V8::Function> = cb.borrow().unwrap().into();
@@ -158,7 +158,7 @@ pub fn start_fetch(args: FunctionCallbackInfo) {
 fn handle_outbound_response(
     res: ResponseResult,
     fetch_id: i32,
-) -> Box<Future<Item = (), Error = ()>> {
+) -> Box<dyn Future<Item = (), Error = ()>> {
     let context = get_context();
     if res.is_err() {
         let err = res.unwrap_err();
@@ -170,10 +170,10 @@ fn handle_outbound_response(
     let res = res.unwrap();
     handle_scope!({
         let mut meta = V8::Object::new();
-        meta.set("status", res.status().as_u16());
+        meta.set(context, "status", res.status().as_u16());
         let status_string = res.status().canonical_reason().unwrap().to_string();
-        meta.set("statusText", status_string);
-        meta.set("headers", headers::v8_headers(res.headers()));
+        meta.set(context, "statusText", status_string);
+        meta.set(context, "headers", headers::v8_headers(res.headers()));
 
         call_fetch_handler(context, vec![&NULL, &NULL, &meta, &fetch_id]);
     });

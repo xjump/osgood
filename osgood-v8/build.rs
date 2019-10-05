@@ -25,9 +25,12 @@ fn build_v8() -> PathBuf {
     let out_dir = PathBuf::from(env::var("OUT_DIR").unwrap());
     let v8_repo_path = out_dir.clone().join("third_party/v8");
 
-    if v8_repo_path.exists() {
-        return v8_repo_path;
+    let third_party_path = out_dir.clone().join("third_party");
+    if !third_party_path.exists() {
+        std::fs::create_dir_all(third_party_path);
     }
+
+    download_depot_tools(out_dir.clone());
 
     // Fetch the v8 source
     fetch_v8(out_dir.clone());
@@ -120,36 +123,31 @@ fn generate_bindings(v8_dir: PathBuf) {
 fn fetch_v8(out_dir: PathBuf) {
     let v8_repo_path = out_dir.join("third_party/v8");
 
-    if !v8_repo_path.exists() {
-        let res = Command::new("fetch")
-            .arg("v8")
-            .current_dir(out_dir.join("third_party"))
-            .status();
-        let status = match res {
-            Ok(val) => val,
-            Err(_) => {
-                download_depot_tools(out_dir.clone());
-                Command::new("fetch")
-                    .arg("v8")
-                    .current_dir(out_dir.join("third_party"))
-                    .status()
-                    .unwrap()
-            }
-        };
-        assert!(status.success());
-    }
+    let status = Command::new("fetch")
+        .arg("v8")
+        .current_dir(out_dir.join("third_party"))
+        .status()
+        .expect("Failed to fetch v8");
+    assert!(status.success());
 }
 
 fn download_depot_tools(out_dir: PathBuf) {
     let depot_tools_repo_url = "https://chromium.googlesource.com/chromium/tools/depot_tools.git";
     let depot_tools_repo_path = out_dir.join("third_party/depot_tools");
-
+    let third_party_dir = out_dir.join("third_party");
     // Clone the depot_tools repo
-    match Repository::clone(depot_tools_repo_url, depot_tools_repo_path.clone()) {
-        Ok(_) => (),
-        Err(ref e) if e.code() == ErrorCode::Exists => (),
-        Err(e) => panic!("Failed to clone depot tools: {}", e),
-    };
+    //match Repository::clone(depot_tools_repo_url, depot_tools_repo_path.clone()) {
+    //    Ok(_) => (),
+    //    Err(ref e) if e.code() == ErrorCode::Exists => (),
+    //    Err(e) => panic!("Failed to clone depot tools: {}", e),
+    //};
+
+    let status = Command::new("git")
+        .args(&["clone", depot_tools_repo_url])
+        .current_dir(third_party_dir.clone())
+        .status()
+        .expect("Failed to clone depot_tools");
+    assert!(status.success());
 
     // Set the path
     if let Some(path) = env::var_os("PATH") {
