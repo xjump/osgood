@@ -110,10 +110,15 @@ fn generate_bindings_windows(v8_dir: PathBuf) {
     println!("cargo:rustc-link-lib=Winmm");
     println!("cargo:rustc-link-lib=Shlwapi");
 
-
+    println!("cargo:rustc-link-lib=v8_init");
+    println!("cargo:rustc-link-lib=v8_initializers");
     println!("cargo:rustc-link-lib=v8_libbase");
+    println!("cargo:rustc-link-lib=v8_nosnapshot");
     println!("cargo:rustc-link-lib=v8_libplatform");
     println!("cargo:rustc-link-lib=v8_monolith");
+    println!("cargo:rustc-link-lib=icui18n");
+    println!("cargo:rustc-link-lib=icuuc");
+
     println!(
         "cargo:rustc-link-search={}/lib",
         v8_dir.to_str().unwrap()
